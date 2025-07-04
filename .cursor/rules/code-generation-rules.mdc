@@ -1,0 +1,52 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+1. Always generate TypeScript interfaces/types (no `any`)
+2. Create test files alongside implementation files
+3. Include comprehensive error handling
+4. Add JSDoc comments for complex functions
+5. Follow established directory structure:
+   src/
+   ├── components/
+   ├── hooks/
+   ├── services/
+   ├── types/
+   ├── utils/
+   ├── stores/
+   └── __tests__/
+   
+```ts
+
+// Always follow this pattern for React components
+interface ComponentProps {
+  // Proper TypeScript props
+}
+
+export const Component: React.FC<ComponentProps> = ({ props }) => {
+  // Implementation with hooks
+};
+
+// And corresponding test file
+describe('Component', () => {
+  it('should render correctly', () => {
+    // Test implementation
+  });
+});
+```
+
+
+Service Patterns
+```ts
+// Service classes with error handling
+export class ServiceName {
+  async method(): Promise<ReturnType> {
+    try {
+      // Implementation
+    } catch (error) {
+      // Proper error handling
+    }
+  }
+}
+```

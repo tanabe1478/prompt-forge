@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- React + TypeScript (strict mode)
+- Vite build tool
+- Tailwind CSS
+- IndexedDB for data storage
+- asearch library for fuzzy search
+- Jest + React Testing Library + Playwright

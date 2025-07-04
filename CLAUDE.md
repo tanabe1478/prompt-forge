@@ -1,0 +1,308 @@
+# PromptForge Project Rules for Claude
+
+## Overview
+PromptForgeは知識ベース管理アプリケーションです。人間とAIが協働して生成AI/LLMに関する知識を蓄積・活用するためのReact + TypeScriptアプリケーションです。
+
+## Development Philosophy
+
+### Test-Driven Development (TDD)
+Kent BeckのTDD開発サイクルに従って開発を進めること：
+
+1. **Red**: 失敗するテストを書く
+2. **Green**: そのテストを通すための最小限のコードを書く  
+3. **Refactor**: コードを改善する
+
+### Quality Assurance
+- 単体テスト、E2Eテストで決まった動作について動作保証する
+- テストカバレッジ85%以上を維持する
+- 重要な機能は95%以上のカバレッジを目指す
+
+## Technical Stack
+
+### Core Technologies
+- **Frontend**: React + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **Database**: IndexedDB
+- **Search**: asearch library
+
+### Testing Stack
+- **Unit Testing**: Jest + React Testing Library
+- **E2E Testing**: Playwright
+- **Test Utilities**: Testing Library Jest DOM
+
+## Development Rules
+
+### 1. TDD Workflow
+**すべての機能開発は以下の順序で行う：**
+
+```
+1. テスト設計 → 2. 失敗テスト作成 → 3. 最小実装 → 4. テスト通過確認 → 5. リファクタリング
+```
+
+#### 具体的な手順：
+- 新機能実装前に、期待する動作を単体テストで記述する
+- テストが失敗することを確認する（Red）
+- テストを通すための最小限のコードを実装する（Green）
+- すべてのテストが通ることを確認する
+- コードを改善・リファクタリングする（Refactor）
+- E2Eテストで統合的な動作を確認する
+
+### 2. Code Structure
+
+#### Directory Structure
+```
+src/
+├── components/     # React コンポーネント
+├── hooks/         # カスタムフック
+├── services/      # データアクセス・API
+├── types/         # TypeScript型定義
+├── utils/         # ユーティリティ関数
+├── stores/        # 状態管理
+└── __tests__/     # テストファイル
+```
+
+#### Component Rules
+- すべてのコンポーネントにはPropsの型定義を含める
+- コンポーネントと同時にテストファイルを作成する
+- 再利用可能なコンポーネント設計を心がける
+
+### 3. Testing Requirements
+
+#### Unit Tests (必須)
+- **作成タイミング**: 機能実装前（TDDサイクル）
+- **対象**: すべての関数、コンポーネント、サービス
+- **カバレッジ**: 最低85%、重要機能は95%
+- **テストファイル**: `[module].test.ts` または `[component].test.tsx`
+
+#### E2E Tests (必須)
+- **作成タイミング**: 機能完成後
+- **対象**: 主要なユーザージャーニー
+- **テストファイル**: `e2e/[feature].spec.ts`
+
+#### Test Naming Convention
+```typescript
+// 単体テスト
+describe('ComponentName', () => {
+  it('should render correctly', () => {
+    // Test implementation
+  });
+  
+  it('should handle user interaction', () => {
+    // Test implementation
+  });
+});
+
+// E2Eテスト
+test('should complete knowledge creation flow', async ({ page }) => {
+  // Test implementation
+});
+```
+
+### 4. TypeScript Rules
+
+#### Type Safety
+- `any`型の使用を避ける
+- すべてのプロパティに適切な型を定義する
+- 外部APIレスポンスには型ガードを使用する
+
+#### Interface/Type Definitions
+```typescript
+// types/index.ts で一元管理
+export interface KnowledgeItem {
+  id: string;
+  metadata: {
+    createdAt: Date;
+    updatedAt: Date;
+    version: number;
+  };
+  humanReadable: {
+    title: string;
+    description: string;
+    personalNotes: string;
+    tags: string[];
+    usageScenarios: string[];
+    examples: Example[];
+  };
+  // ... その他のプロパティ
+}
+```
+
+### 5. Data Management
+
+#### IndexedDB Usage
+- すべてのデータアクセスは`services/`ディレクトリで管理
+- CRUD操作にはエラーハンドリングを含める
+- データの整合性を保つ
+
+#### Search Implementation
+- asearchライブラリを使用した曖昧検索
+- 複数フィールドでの検索対応
+- 検索結果のスコアリング機能
+
+### 6. Error Handling
+
+#### Error Boundaries
+- Reactコンポーネントのエラーバウンダリを実装
+- ユーザーフレンドリーなエラーメッセージ表示
+
+#### Service Layer
+- すべてのサービス関数でエラーハンドリングを実装
+- 適切なエラーログ出力
+
+### 7. Performance Guidelines
+
+#### React Performance
+- 不要な再レンダリングを避ける
+- `useMemo`、`useCallback`を適切に使用
+- コンポーネントの分割を行う
+
+#### Search Performance
+- 検索レスポンス時間: 1秒以内
+- 100件程度のデータで快適に動作
+- 必要に応じてデバウンス処理を実装
+
+### 8. AI Integration
+
+#### API Integration
+- OpenAI/Claude APIとの連携
+- 環境変数でのAPIキー管理
+- レート制限への対応
+
+#### Error Handling
+- API接続エラーの適切な処理
+- ユーザーへのフィードバック提供
+
+### 9. Code Quality
+
+#### Linting and Formatting
+- ESLint設定に従う
+- Prettierでコードフォーマット
+- pre-commitフックでのチェック
+
+#### Code Review
+- 新機能はテストとセットで実装
+- TypeScriptエラーのない状態を維持
+- パフォーマンスへの配慮
+
+### 10. Documentation
+
+#### Code Documentation
+- 複雑な関数にはJSDocコメントを付与
+- README.mdの更新
+- API仕様の文書化
+
+#### Test Documentation
+- テストケースの意図を明確にする
+- エッジケースの説明を含める
+
+## Implementation Priority
+
+### Phase 1: Core Functionality
+1. データモデル（IndexedDB）
+2. 基本的なCRUD操作
+3. 単体テスト実装
+
+### Phase 2: User Interface
+1. React コンポーネント
+2. 検索機能（asearch）
+3. E2Eテスト実装
+
+### Phase 3: Advanced Features
+1. AI連携機能
+2. データ可視化
+3. 統合テスト
+
+## Success Criteria
+
+### Code Quality
+- すべてのテストが通る
+- TypeScriptエラーがない
+- ESLintエラーがない
+- テストカバレッジ85%以上
+
+### Functionality
+- 基本的なCRUD操作が動作する
+- 検索機能が正常に動作する
+- AI連携機能が動作する（Phase 3）
+
+### User Experience
+- 直感的な操作が可能
+- レスポンスの良い動作
+- エラーメッセージがわかりやすい
+
+## Common Patterns
+
+### Service Pattern
+```typescript
+// services/knowledgeService.ts
+export class KnowledgeService {
+  async create(item: CreateKnowledgeItem): Promise<KnowledgeItem> {
+    // Implementation with error handling
+  }
+  
+  async findAll(): Promise<KnowledgeItem[]> {
+    // Implementation with error handling
+  }
+}
+```
+
+### Component Pattern
+```typescript
+// components/KnowledgeCard.tsx
+interface KnowledgeCardProps {
+  item: KnowledgeItem;
+  onEdit: (id: string) => void;
+  onDelete: (id: string) => void;
+}
+
+export const KnowledgeCard: React.FC<KnowledgeCardProps> = ({
+  item,
+  onEdit,
+  onDelete,
+}) => {
+  // Component implementation
+};
+```
+
+### Test Pattern
+```typescript
+// __tests__/KnowledgeCard.test.tsx
+import { render, screen, fireEvent } from '@testing-library/react';
+import { KnowledgeCard } from '../components/KnowledgeCard';
+
+describe('KnowledgeCard', () => {
+  const mockItem = {
+    // Mock data
+  };
+  
+  it('should render knowledge item correctly', () => {
+    render(<KnowledgeCard item={mockItem} onEdit={jest.fn()} onDelete={jest.fn()} />);
+    expect(screen.getByText(mockItem.humanReadable.title)).toBeInTheDocument();
+  });
+});
+```
+
+## Claude-Specific Instructions
+
+### When asked to implement features:
+1. **Always start with tests**: Before writing implementation code, create appropriate unit tests
+2. **Follow TDD cycle**: Red → Green → Refactor
+3. **Type safety first**: Use proper TypeScript types, avoid `any`
+4. **Error handling**: Include comprehensive error handling in all functions
+5. **Performance considerations**: Implement efficient patterns for React components
+
+### When generating code:
+- Include proper TypeScript interfaces and types
+- Add JSDoc comments for complex functions
+- Create test files alongside implementation files
+- Follow the established directory structure
+- Use the provided code patterns as templates
+
+### When refactoring:
+- Ensure all existing tests still pass
+- Maintain or improve test coverage
+- Keep the same public API unless explicitly requested to change
+- Add tests for any new behavior introduced during refactoring
+
+Remember: Test first, implement second, refactor third. Every feature should have corresponding tests that verify its behavior before implementation begins. 
