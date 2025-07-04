@@ -13,17 +13,17 @@
 - [x] プロジェクトの初期化（package.json, tsconfig.json等）
 - [x] 基本的なコンポーネント構造
 - [x] 型定義ファイル（types/index.ts）
-- [ ] IndexedDBのセットアップ
+- [x] IndexedDBのセットアップ
 - [x] テスト環境の設定
 
 #### 2.2 データモデル実装
 - [x] KnowledgeItemの型定義（types/index.ts）
-- [ ] IndexedDB初期化スクリプト（services/database.ts）
-- [ ] 基本的なCRUD操作（services/knowledgeService.ts）
-- [ ] 各CRUD操作の単体テスト
-- [ ] エラーハンドリングのテスト
-- [ ] データ整合性の確認
-- [ ] IndexedDBの初期化テスト
+- [x] IndexedDB初期化スクリプト（services/database.ts）
+- [x] 基本的なCRUD操作（services/knowledgeService.ts）
+- [x] 各CRUD操作の単体テスト
+- [x] エラーハンドリングのテスト
+- [x] データ整合性の確認
+- [x] IndexedDBの初期化テスト
 
 #### 2.3 基本UI実装
 - [ ] SearchBar（検索バー）
@@ -84,20 +84,21 @@
 ## 進捗サマリー
 
 ### 完了タスク数
-- Phase 1: 5/19 (26%)
+- Phase 1: 12/19 (63%)
 - Phase 2: 0/15 (0%)
 - Phase 3: 0/11 (0%)
 - Phase 5: 0/6 (0%)
 
-**総合進捗: 5/51 (10%)**
+**総合進捗: 12/51 (24%)**
 
 ## 次のアクション
 1. ~~developブランチでの開発開始~~ ✓
 2. ~~プロジェクト初期化（package.json, tsconfig.json）~~ ✓
 3. ~~基本的なフォルダ構造の作成~~ ✓
-4. npm installでの依存関係インストール
-5. IndexedDBのセットアップ
-6. 基本的なCRUD操作の実装（TDDアプローチ）
+4. ~~IndexedDBのセットアップ~~ ✓
+5. ~~基本的なCRUD操作の実装（TDDアプローチ）~~ ✓
+6. 基本的なUIコンポーネントの実装
+7. npm installでの依存関係インストールとテスト実行
 
 ## 注記
 - TDD（テスト駆動開発）を厳守
