@@ -1,0 +1,53 @@
+name: Dependabot Auto-merge
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  dependabot:
+    name: Auto-merge Dependabot PRs
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run tests
+      run: npm test
+      
+    - name: Check if PR is for patch or minor update
+      id: check-update
+      run: |
+        if [[ "${{ github.head_ref }}" =~ dependabot/npm_and_yarn/.*-[0-9]+\.[0-9]+\.[0-9]+ ]]; then
+          echo "update_type=patch" >> $GITHUB_OUTPUT
+        elif [[ "${{ github.head_ref }}" =~ dependabot/npm_and_yarn/.*-[0-9]+\.[0-9]+ ]]; then
+          echo "update_type=minor" >> $GITHUB_OUTPUT
+        else
+          echo "update_type=major" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Auto-approve PR
+      if: steps.check-update.outputs.update_type != 'major'
+      uses: juliangruber/approve-pull-request-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        number: ${{ github.event.pull_request.number }}
+        
+    - name: Auto-merge PR
+      if: steps.check-update.outputs.update_type != 'major'
+      uses: pascalgn/merge-action@v0.15.6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        merge_method: squash
+        merge_commit_message: "pull-request-title-and-description"
