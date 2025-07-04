@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(mkdir:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(npm install:*)",
+      "Bash(npm test)",
+      "Bash(npm run dev:*)",
+      "Bash(npm test:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)"
     ],
     "deny": []
   }

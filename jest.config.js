@@ -32,4 +32,8 @@ export default {
       statements: 85,
     },
   },
+  testTimeout: 10000,
+  globals: {
+    structuredClone: (obj) => JSON.parse(JSON.stringify(obj)),
+  },
 }
